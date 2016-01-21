@@ -46,6 +46,7 @@ import org.hisp.dhis.android.sdk.ui.activities.LoginActivity;
 import org.hisp.dhis.android.sdk.ui.activities.OnBackPressedListener;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 import org.hisp.dhis.android.sdk.ui.fragments.loading.LoadingFragment;
+import org.hisp.dhis.android.sdk.utils.NetworkUtils;
 import org.hisp.dhis.android.sdk.utils.UiUtils;
 
 public class MainActivity extends AppCompatActivity implements INavigationHandler {
@@ -89,7 +90,8 @@ public class MainActivity extends AppCompatActivity implements INavigationHandle
     public void loadInitialData() {
         String message = getString(org.hisp.dhis.android.sdk.R.string.finishing_up);
         UiUtils.postProgressMessage(message);
-        DhisService.loadInitialData(MainActivity.this);
+        if(NetworkUtils.checkConnection(MainActivity.this))
+            DhisService.loadInitialData(MainActivity.this);
     }
 
     public void showLoadingFragment() {
