@@ -204,12 +204,13 @@ class SelectProgramFragmentQuery implements Query<SelectProgramFragmentForm> {
 
         @Override
         public int compare(Event first, Event second) {
-            if (first.getLastUpdated() == null || second.getLastUpdated() == null) {
+
+            if ((first.getCreationDate() == null && first.getCreated()==null) || (second.getCreationDate() == null && second.getCreated()==null)) {
                 return 0;
             }
 
-            DateTime firstDateTime = DateTime.parse(first.getLastUpdated());
-            DateTime secondDateTime = DateTime.parse(second.getLastUpdated());
+            DateTime firstDateTime = DateTime.parse(getCreatedDate(first));
+            DateTime secondDateTime = DateTime.parse(getCreatedDate(second));
 
             if (firstDateTime.isBefore(secondDateTime)) {
                 return 1;
@@ -218,6 +219,13 @@ class SelectProgramFragmentQuery implements Query<SelectProgramFragmentForm> {
             } else {
                 return 0;
             }
+        }
+
+        private String getCreatedDate(Event event) {
+            if(event.getCreated() != null) {
+                return  event.getCreated();
+            }
+            return  event.getCreationDate();
         }
     }
 }
